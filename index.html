@@ -27,20 +27,51 @@
 		</style>
 
 		<script src="https://code.highcharts.com/highcharts.js"></script>
-		<script src="https://code.highcharts.com/modules/data.js"></script>
 
 		<script>
 			document.addEventListener("DOMContentLoaded", function () {
-				var yearMin = 2015;
-				var yearMax = 2025;
-		    	var yearFrom = 2015;
-				var yearTo = 2015;
+				fetch("http://www.teochewthunder.com/demo/hc_github/hcdata_github.csv")
+			    .then(response => response.text())
+			    .then(csvData => {
+			        const lines = csvData.split("\n");
+			        const massagedData = rows.slice(1).map(row => {
+		            	const cols = row.split(",");
+		            	var year = parseInt(cols[0]);
+		            	var month = parseInt(cols[1]);
+		            	var contributions = parseInt(cols[2]);
 
-				renderLineChart();				
+		            	return [year, month, contributions];
+		        	});
+
+		        	const years = massagedData.map(col => col[0]);
+					var yearMin = Math.min(...years);
+					var yearMax = Math.max(...years);
+			    	var yearFrom = yearMin;
+					var yearTo = yearMin;
+
+					//manipulate ranges
+		    		var rngYearFrom = document.getElementById("rngYearFrom");
+		    		var rngYearTo = document.getElementById("rngYearTo");
+
+		    		rngYearFrom.min = yearMin;
+		    		rngYearFrom.max = yearMax;
+		    		rngYearFrom.value = yearFrom;
+
+		    		rngYearTo.min = yearMin;
+		    		rngYearTo.max = yearMax;
+		    		rngYearTo.value = yearTo;
+
+			        renderLineChart(massagedData);	
+			    });			
 		    });
 
-		    function renderLineChart()
+		    function renderLineChart(data)
 		    {
+		    	var rngYearFrom = document.getElementById("rngYearFrom");
+		    	var rngYearTo = document.getElementById("rngYearTo");
+		    	var yearFrom = rngYearFrom.value;
+				var yearTo = rngYearTo.value;
+
 		        const chart = Highcharts.chart("container", {
 		            chart: 
 		            {
@@ -57,18 +88,9 @@
 		            {
 		                text: "GitHub statistics by TeochewThunder",
 		                style: { "color": "rgba(200, 0, 0, 0.8)", "font-size": "0.8em" }
-		            },
-		            data: 
-		            {
-				        csvURL: "http://www.teochewthunder.com/demo/hc_github/hcdata_github.csv",
-				        enablePolling: true, // Optional: updates chart automatically
-				        dataRefreshRate: 5    // Refresh interval in seconds
-				        firstRowAsNames: true,    // Use first row for series names  
 		            }
 		    	});
 		    }
-
-	    	const data = [];
 		</script>
 	</head>
 
@@ -78,16 +100,16 @@
 		</div>
 
 		<div id="dashboard">
-			<label for="ddlYearFrom">
+			<label for="rngYearFrom">
 				YEAR FROM
-				<input id="ddlYearFrom" type="range" min="2015" max="2025">
+				<input id="rngYearFrom" type="range" min="2015" max="2025">
 
 				</select>
 			</label>
 
-			<label for="ddlYearTo">
+			<label for="rngYearTo">
 				YEAR TO
-				<input id="ddlYearTo" type="range" min="2015" max="2025">
+				<input id="rngYearTo" type="range" min="2015" max="2025">
 
 				</select>
 			</label>			
