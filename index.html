@@ -34,7 +34,7 @@
 			    .then(response => response.text())
 			    .then(csvData => {
 			        const lines = csvData.split("\n");
-			        const massagedData = rows.slice(1).map(row => {
+			        currentData = rows.slice(1).map(row => {
 		            	const cols = row.split(",");
 		            	var year = parseInt(cols[0]);
 		            	var month = parseInt(cols[1]);
@@ -43,7 +43,7 @@
 		            	return [year, month, contributions];
 		        	});
 
-		        	const years = massagedData.map(col => col[0]);
+		        	var years = currentData.map(col => col[0]);
 					var yearMin = Math.min(...years);
 					var yearMax = Math.max(...years);
 			    	var yearFrom = yearMin;
@@ -56,21 +56,23 @@
 		    		rngYearFrom.min = yearMin;
 		    		rngYearFrom.max = yearMax;
 		    		rngYearFrom.value = yearFrom;
-
+//visual
 		    		rngYearTo.min = yearMin;
 		    		rngYearTo.max = yearMax;
 		    		rngYearTo.value = yearTo;
-
-			        renderLineChart(massagedData);	
+//visual
+			        renderLineChart();	
 			    });			
 		    });
 
-		    function renderLineChart(data)
+		    function renderLineChart()
 		    {
 		    	var rngYearFrom = document.getElementById("rngYearFrom");
 		    	var rngYearTo = document.getElementById("rngYearTo");
-		    	var yearFrom = rngYearFrom.value;
-				var yearTo = rngYearTo.value;
+		    	var yearFrom = parseInt(rngYearFrom.value);
+				var yearTo = parseInt(rngYearTo.value);
+
+				var dataset = currentData.filter((x) =>{ return parseInt(x.year) >= yearFrom && parseInt(x.year) <= yearTo});
 
 		        const chart = Highcharts.chart("container", {
 		            chart: 
@@ -91,6 +93,46 @@
 		            }
 		    	});
 		    }
+
+		    function setFrom() 
+		    {
+		    	var rngYearFrom = document.getElementById("rngYearFrom");
+		    	var rngYearTo = document.getElementById("rngYearTo");
+		    	var yearFrom = parseInt(rngYearFrom.value);
+				var yearTo = parseInt(rngYearTo.value);
+
+				if (yearFrom > yearTo)
+				{
+					yearTo = yearFrom;
+					rngYearTo.value = yearTo;
+					//set visual
+				}
+
+				//set visual
+
+				console.log(currentData);
+		    }
+
+		    function setTo() 
+		    {
+		    	var rngYearFrom = document.getElementById("rngYearFrom");
+		    	var rngYearTo = document.getElementById("rngYearTo");	
+		    	var yearFrom = parseInt(rngYearFrom.value);
+				var yearTo = parseInt(rngYearTo.value);
+
+				if (yearTo < yearFrom)
+				{
+					yearFrom = yearTo;
+					rngYearFrom.value = yearFrom;
+					//set visual
+				}
+
+				//set visual
+				
+				console.log(currentData);    	
+		    }
+
+		    let currentData = [];
 		</script>
 	</head>
 
@@ -102,16 +144,12 @@
 		<div id="dashboard">
 			<label for="rngYearFrom">
 				YEAR FROM
-				<input id="rngYearFrom" type="range" min="2015" max="2025">
-
-				</select>
+				<input id="rngYearFrom" type="range" min="2015" max="2025" oninput="setFrom()" />
 			</label>
 
 			<label for="rngYearTo">
 				YEAR TO
-				<input id="rngYearTo" type="range" min="2015" max="2025">
-
-				</select>
+				<input id="rngYearTo" type="range" min="2015" max="2025" oninput="setTo()" />
 			</label>			
 		</div>
 	</body>
