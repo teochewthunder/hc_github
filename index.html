@@ -50,7 +50,6 @@
 			    	var yearFrom = yearMin;
 					var yearTo = yearMin;
 
-					//manipulate ranges
 		    		var rngYearFrom = document.getElementById("rngYearFrom");
 		    		var rngYearTo = document.getElementById("rngYearTo");
 		    		var yearFrom = parseInt(rngYearFrom.value);
@@ -77,29 +76,60 @@
 		    	var yearFrom = parseInt(rngYearFrom.value);
 				var yearTo = parseInt(rngYearTo.value);
 
-				var dataset = currentData.filter((x) =>{ return parseInt(x.year) >= yearFrom && parseInt(x.year) <= yearTo});
+				var dataset = currentData.filter((x) =>{ return parseInt(x[0]) >= yearFrom && parseInt(x[0]) <= yearTo});
+
+				var years = dataset.map(col => col[0]);
+				var commits = dataset.map(col => col[2]);
 
 		        const chart = Highcharts.chart("container", {
 		            chart: 
 		            {
-		                borderColor: "rgba(200, 0, 0, 1)",
+		                borderColor: "rgba(250, 100, 0, 1)",
 		                borderRadius: 10,
 		                borderWidth: 2,
 		            },
 		            title: 
 		            {
 		                text: "My Contributions",
-		                style: { "color": "rgba(200, 0, 0, 1)", "font-size": "2.5em", "font-weight": "bold" }
+		                style: { "color": "rgba(250, 100, 0, 1)", "font-size": "2.5em", "font-weight": "bold" }
 		            },
 		            subtitle: 
 		            {
 		                text: "GitHub statistics by TeochewThunder",
-		                style: { "color": "rgba(200, 0, 0, 0.8)", "font-size": "0.8em" }
-		            }
+		                style: { "color": "rgba(250, 100, 0, 0.8)", "font-size": "0.8em" }
+		            },
+		            xAxis: 
+		            {
+		                categories: years
+		            },
+		            yAxis: 
+		            {
+		                title: 
+		                {
+		                    text: "Commits"
+		                },
+		                gridLineColor: "rgba(250, 100, 0, 0.2)",
+		                tickColor: "rgba(250, 100, 0, 0.2)"
+		            },
+		            series:
+		            [
+				    	{
+			                name: "commits",
+			                type: "spline",
+			                data: commits,
+					        lineColor: "rgba(250, 100, 0, 1)",
+					        lineWidth: 5,
+					        dashStyle: "Solid",
+					        marker: 
+					        {
+						        fillColor: "rgba(250, 100, 0, 1)"
+					        }
+			            }
+		            ]
 		    	});
 		    }
 
-		    function setFrom() 
+		    function setYear(target) 
 		    {
 		    	var rngYearFrom = document.getElementById("rngYearFrom");
 		    	var rngYearTo = document.getElementById("rngYearTo");
@@ -108,37 +138,30 @@
 		    	var yearFrom = parseInt(rngYearFrom.value);
 				var yearTo = parseInt(rngYearTo.value);
 
-				if (yearFrom > yearTo)
+				if (target == "from")
 				{
-					yearTo = yearFrom;
-					rngYearTo.value = yearFrom;
-					opYearTo.value = yearFrom;
+					if (yearFrom > yearTo)
+					{
+						yearTo = yearFrom;
+						rngYearTo.value = yearFrom;
+						opYearTo.value = yearFrom;
+					}
+
+					opYearFrom.value = yearFrom;
+				}
+				else
+				{
+					if (yearTo < yearFrom)
+					{
+						yearFrom = yearTo;
+						rngYearFrom.value = yearTo;
+						opYearFrom.value = yearTo;
+					}		
+
+					opYearTo.value = yearTo;			
 				}
 
-				opYearFrom.value = yearFrom;
-
-				console.log(currentData);
-		    }
-
-		    function setTo() 
-		    {
-		    	var rngYearFrom = document.getElementById("rngYearFrom");
-		    	var rngYearTo = document.getElementById("rngYearTo");	
-		    	var opYearFrom = document.getElementById("opYearFrom");
-		    	var opYearTo = document.getElementById("opYearTo");
-		    	var yearFrom = parseInt(rngYearFrom.value);
-				var yearTo = parseInt(rngYearTo.value);
-
-				if (yearTo < yearFrom)
-				{
-					yearFrom = yearTo;
-					rngYearFrom.value = yearTo;
-					opYearFrom.value = yearTo;
-				}
-
-				opYearTo.value = yearTo;
-				
-				console.log(currentData);    	
+				renderLineChart();
 		    }
 
 		    let currentData = [];
@@ -153,13 +176,13 @@
 		<div id="dashboard">
 			<label for="rngYearFrom">
 				FROM
-				<input id="rngYearFrom" type="range" min="2015" max="2025" oninput="setFrom()" />
+				<input id="rngYearFrom" type="range" min="2015" max="2025" oninput="setYear('from')" />
 				<output id="opYearFrom" for="rngYearFrom"></output>
 			</label>
 			<br />
 			<label for="rngYearTo">
 				TO
-				<input id="rngYearTo" type="range" min="2015" max="2025" oninput="setTo()" />
+				<input id="rngYearTo" type="range" min="2015" max="2025" oninput="setYear('to')" />
 				<output id="opYearTo" for="rngYearTo"></output>
 			</label>			
 		</div>
