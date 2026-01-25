@@ -48,10 +48,9 @@
 					var yearMin = Math.min(...years);
 					var yearMax = Math.max(...years);
 
-					var yearSeries = [];
 					for (var i = yearMin; i <= yearMax; i++)
 					{
-						yearSeries[i] = currentData.filter((x) => { return x[0] == i; });
+						yearSeriesData[i] = currentData.filter((x) => { return x[0] == i; });
 					}
 
 			    	var yearFrom = yearMin;
@@ -87,9 +86,15 @@
 
 				var dataset = currentData.filter((x) =>{ return parseInt(x[0]) >= yearFrom && parseInt(x[0]) <= yearTo});
 
-				var years = dataset.map(col => col[0]);
+				var years = dataset.map(col => monthToName(col[1]) + " " + col[0]);
 				var commits = dataset.map(col => col[2]);
-console.log(commits)
+
+				var commitsYearSeries = [];
+				for (var i = yearFrom; i <= yearTo; i++)
+				{
+					commitsYearSeries[i] = yearSeriesData[i].map(col => col[2]);
+				} 
+
 		        const chart = Highcharts.chart("container", {
 		            chart: 
 		            {
@@ -137,7 +142,7 @@ console.log(commits)
 						{
 			                name: "2020",
 			                type: "spline",
-			                data: yearSeries[2020],
+			                data: commitsYearSeries[2020],
 					        lineColor: "rgba(250, 100, 0, 0.5)",
 					        lineWidth: 5,
 					        dashStyle: "Solid",
@@ -149,13 +154,13 @@ console.log(commits)
 						{
 			                name: "2021",
 			                type: "spline",
-			                data: yearSeries[2021],
-					        lineColor: "rgba(250, 100, 0, 0.5)",
+			                data: commitsYearSeries[2021],
+					        lineColor: "rgba(0, 100, 0, 0.5)",
 					        lineWidth: 5,
 					        dashStyle: "Solid",
 					        marker: 
 					        {
-						        fillColor: "rgba(250, 100, 0, 0.5)"
+						        fillColor: "rgba(0, 100, 0, 0.5)"
 					        }
 			            }
 		            ]
@@ -197,7 +202,14 @@ console.log(commits)
 				renderLineChart();
 		    }
 
+		    function monthToName(month)
+		    {
+		    	monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+		    	return monthNames[parseInt(month) - 1];
+		    }
+
 		    let currentData = [];
+		    let yearSeriesData = [];
 		</script>
 	</head>
 
