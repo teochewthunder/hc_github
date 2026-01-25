@@ -47,11 +47,20 @@
 		        	var years = currentData.map(col => col[0]);
 					var yearMin = Math.min(...years);
 					var yearMax = Math.max(...years);
+
+					var yearSeries = [];
+					for (var i = yearMin; i <= yearMax; i++)
+					{
+						yearSeries[i] = currentData.filter((x) => { return x[0] == i; });
+					}
+
 			    	var yearFrom = yearMin;
 					var yearTo = yearMin;
 
 		    		var rngYearFrom = document.getElementById("rngYearFrom");
 		    		var rngYearTo = document.getElementById("rngYearTo");
+			    	var opYearFrom = document.getElementById("opYearFrom");
+			    	var opYearTo = document.getElementById("opYearTo");
 		    		var yearFrom = parseInt(rngYearFrom.value);
 					var yearTo = parseInt(rngYearTo.value);
 
@@ -80,7 +89,7 @@
 
 				var years = dataset.map(col => col[0]);
 				var commits = dataset.map(col => col[2]);
-
+console.log(commits)
 		        const chart = Highcharts.chart("container", {
 		            chart: 
 		            {
@@ -113,7 +122,7 @@
 		            },
 		            series:
 		            [
-				    	{
+/*				    	{
 			                name: "commits",
 			                type: "spline",
 			                data: commits,
@@ -123,6 +132,30 @@
 					        marker: 
 					        {
 						        fillColor: "rgba(250, 100, 0, 1)"
+					        }
+			            }*/
+						{
+			                name: "2020",
+			                type: "spline",
+			                data: yearSeries[2020],
+					        lineColor: "rgba(250, 100, 0, 0.5)",
+					        lineWidth: 5,
+					        dashStyle: "Solid",
+					        marker: 
+					        {
+						        fillColor: "rgba(250, 100, 0, 0.5)"
+					        }
+			            },
+						{
+			                name: "2021",
+			                type: "spline",
+			                data: yearSeries[2021],
+					        lineColor: "rgba(250, 100, 0, 0.5)",
+					        lineWidth: 5,
+					        dashStyle: "Solid",
+					        marker: 
+					        {
+						        fillColor: "rgba(250, 100, 0, 0.5)"
 					        }
 			            }
 		            ]
