@@ -81,19 +81,58 @@
 		    {
 		    	var rngYearFrom = document.getElementById("rngYearFrom");
 		    	var rngYearTo = document.getElementById("rngYearTo");
+		    	var cbSeries = document.getElementById("cbSeries");
 		    	var yearFrom = parseInt(rngYearFrom.value);
 				var yearTo = parseInt(rngYearTo.value);
 
 				var dataset = currentData.filter((x) =>{ return parseInt(x[0]) >= yearFrom && parseInt(x[0]) <= yearTo});
 
-				var years = dataset.map(col => monthToName(col[1]) + " " + col[0]);
+				var years = dataset.map(col => monthToName(col[1]) + (cbSeries.checked ? "" : " " + col[0]));
 				var commits = dataset.map(col => col[2]);
 
-				var commitsYearSeries = [];
-				for (var i = yearFrom; i <= yearTo; i++)
+				var series = [];
+				if (cbSeries.checked)
 				{
-					commitsYearSeries[i] = yearSeriesData[i].map(col => col[2]);
-				} 
+					for (var i = yearFrom; i <= yearTo; i++)
+					{
+						var diff = yearTo - yearFrom;
+						var r = (250 / diff) * (i - yearFrom);
+						var g = (100 / diff) * (i - yearFrom);
+
+						var seriesData = yearSeriesData[i].map(col => col[2]);
+						series.push(
+							{
+								name: i,
+				                type: "spline",
+				                data: seriesData,
+						        lineColor: "rgba(" + r + ", " + g + ", 0, 1)",
+						        lineWidth: 5,
+						        dashStyle: "Solid",
+						        marker: 
+						        {
+							        fillColor: "rgba(" + r + ", " + g + ", 0, 1)"
+						        }							
+							}
+						);
+					} 
+				}
+				else
+				{
+		            series = [
+				    	{
+			                name: "commits",
+			                type: "spline",
+			                data: commits,
+					        lineColor: "rgba(250, 100, 0, 1)",
+					        lineWidth: 5,
+					        dashStyle: "Solid",
+					        marker: 
+					        {
+						        fillColor: "rgba(250, 100, 0, 1)"
+					        }
+			            }
+			        ];
+				}
 
 		        const chart = Highcharts.chart("container", {
 		            chart: 
@@ -125,45 +164,7 @@
 		                gridLineColor: "rgba(250, 100, 0, 0.2)",
 		                tickColor: "rgba(250, 100, 0, 0.2)"
 		            },
-		            series:
-		            [
-/*				    	{
-			                name: "commits",
-			                type: "spline",
-			                data: commits,
-					        lineColor: "rgba(250, 100, 0, 1)",
-					        lineWidth: 5,
-					        dashStyle: "Solid",
-					        marker: 
-					        {
-						        fillColor: "rgba(250, 100, 0, 1)"
-					        }
-			            }*/
-						{
-			                name: "2020",
-			                type: "spline",
-			                data: commitsYearSeries[2020],
-					        lineColor: "rgba(250, 100, 0, 0.5)",
-					        lineWidth: 5,
-					        dashStyle: "Solid",
-					        marker: 
-					        {
-						        fillColor: "rgba(250, 100, 0, 0.5)"
-					        }
-			            },
-						{
-			                name: "2021",
-			                type: "spline",
-			                data: commitsYearSeries[2021],
-					        lineColor: "rgba(0, 100, 0, 0.5)",
-					        lineWidth: 5,
-					        dashStyle: "Solid",
-					        marker: 
-					        {
-						        fillColor: "rgba(0, 100, 0, 0.5)"
-					        }
-			            }
-		            ]
+		            series: series
 		    	});
 		    }
 
@@ -219,6 +220,7 @@
 		</div>
 
 		<div id="dashboard">
+			<label for="rngYearFrom"><input type="checkbox" id="cbSeries" onclick="renderLineChart()"> DISPLAY AS SERIES</label>
 			<label for="rngYearFrom">
 				FROM
 				<input id="rngYearFrom" type="range" min="2015" max="2025" oninput="setYear('from')" />
