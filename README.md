@@ -19,16 +19,16 @@ HighCharts code for displaying dynamic Line Chart from imported CSV.
   - xx
   - xx
 - `setYear()`
-  - has `target` as a parameter. THe value is either "from" or "to".
+  - has `target` as a parameter. The value is either "from" or "to".
   - if "from"
     - if the new value of `rngYearFrom` is greater than the current value of `rngYearTo`, set `rngYearTo`'s value to be the same as `rngYearFrom`'s.
   - if "to"
     - if the new value of `rngYearTo` is lesser than the current value of `rngYearFrom`, set `rngYearFrom`'s value to be the same as `rngYearTo`'s.
   - run `renderLineChart()`.
-- `monthName()`
-  - xx
-  - xx
-  - xx
+- `monthToName()`
+  - has `month` as a parameter. This is an integer from 1 to 12.
+  - declare an array of month names.
+  - use `month` - 1 as a reference to that array, and return the element's value.
 - `renderLineChart()`
   - xx
   - xx
