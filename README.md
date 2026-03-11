@@ -15,6 +15,12 @@ HighCharts code for displaying dynamic Line Chart from imported CSV.
 
 ## JavaScript 
 - onLoad
+  - grab data from CSV.
+  - convert to integer values and create a two-dimensional array of these values.
+  - Obtain the minimum and maximum values of the `Year` column.
+  - Use the minimum and maximum values in a `For` loop to populate the `yearSeriesData` array.
+  - xx
+  - xx
   - xx
   - xx
   - xx
