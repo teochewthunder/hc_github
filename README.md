@@ -17,13 +17,10 @@ HighCharts code for displaying dynamic Line Chart from imported CSV.
 - onLoad
   - grab data from CSV.
   - convert to integer values and create a two-dimensional array of these values.
-  - Obtain the minimum and maximum values of the `Year` column.
-  - Use the minimum and maximum values in a `For` loop to populate the `yearSeriesData` array.
-  - xx
-  - xx
-  - xx
-  - xx
-  - xx
+  - obtain the minimum and maximum values of the `Year` column.
+  - use the minimum and maximum values in a `For` loop to populate the `yearSeriesData` array.
+  - set all range sliders and outputs to minimum value.
+  - run `renderLineChart()`.
 - `setYear()`
   - has `target` as a parameter. The value is either "from" or "to".
   - if "from"
