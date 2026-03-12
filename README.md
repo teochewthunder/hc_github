@@ -16,9 +16,9 @@ HighCharts code for displaying dynamic Line Chart from imported CSV.
 ## JavaScript 
 - onLoad
   - grab data from CSV.
-  - convert to integer values and create a two-dimensional array of these values.
+  - convert to integer values and create a two-dimensional array of these values. Assign to `currentData` array.
   - obtain the minimum and maximum values of the `Year` column.
-  - use the minimum and maximum values in a `For` loop to populate the `yearSeriesData` array.
+  - use the minimum and maximum values in a `For` loop to populate the `yearSeriesData` array from `currentData` array.
   - set all range sliders and outputs to minimum value.
   - run `renderLineChart()`.
 - `setYear()`
@@ -33,7 +33,11 @@ HighCharts code for displaying dynamic Line Chart from imported CSV.
   - declare an array of month names.
   - use `month` - 1 as a reference to that array, and return the element's value.
 - `renderLineChart()`
+  - get values of range sliders `rngYearFrom` and `rngYearTo` and checkbox `cbSeparateYears`.
+  - declare `dataset` and populate it using a subset from `currentData`, using values of `rngYearFrom` and `rngYearTo` as lower and upper limits.
   - xx
+  - xx
+  - x
   - xx
   - xx
 
