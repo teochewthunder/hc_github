@@ -23,9 +23,9 @@ HighCharts code for displaying dynamic Line Chart from imported CSV.
   - run `renderLineChart()`.
 - `setYear()`
   - has `target` as a parameter. The value is either "from" or "to".
-  - if "from"
+  - if "from":
     - if the new value of `rngYearFrom` is greater than the current value of `rngYearTo`, set `rngYearTo`'s value to be the same as `rngYearFrom`'s.
-  - if "to"
+  - if "to":
     - if the new value of `rngYearTo` is lesser than the current value of `rngYearFrom`, set `rngYearFrom`'s value to be the same as `rngYearTo`'s.
   - run `renderLineChart()`.
 - `monthToName()`
@@ -35,9 +35,10 @@ HighCharts code for displaying dynamic Line Chart from imported CSV.
 - `renderLineChart()`
   - get values of range sliders `rngYearFrom` and `rngYearTo` and checkbox `cbSeparateYears`.
   - declare `dataset` and populate it using a subset from `currentData`, using values of `rngYearFrom` and `rngYearTo` as lower and upper limits.
-  - xx
-  - xx
-  - x
-  - xx
+  - declare `commits` as an array of all the third column data values of `dataset`
+  - if `cbSeparateYears` is checked:
+    - make `series` an array of elements from `yearSeriesData`.
+  - if `cbSeparateYears` is not checked:
+    - make `series` an array of one object with`commits` as the data.
   - xx
 
