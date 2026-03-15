@@ -38,7 +38,9 @@ HighCharts code for displaying dynamic Line Chart from imported CSV.
   - declare `commits` as an array of all the third column data values of `dataset`
   - if `cbSeparateYears` is checked:
     - make `series` an array of elements from `yearSeriesData`.
+    - labels on x-axis should show only month.
   - if `cbSeparateYears` is not checked:
     - make `series` an array of one object with`commits` as the data.
-  - xx
+    - labels on x-axis should show month and year.
+  - display chart using `series`.
 
