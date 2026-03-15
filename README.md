@@ -1,4 +1,4 @@
-# HighCharts Line Chart for GitHub commits (TBA)
+# HighCharts Line Chart for GitHub commits
 HighCharts code for displaying dynamic Line Chart from imported CSV.
 
 ## HTML
